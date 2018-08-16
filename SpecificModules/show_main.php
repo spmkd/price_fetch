@@ -96,7 +96,7 @@ if($result2->num_rows > 0) {
 				
 				echo "<td><table>";
 				echo "	<tr>";
-				echo "		<td colspan=\"2\"> $gameTitle[$locationAtStack] </td>";
+				echo "		<td colspan=\"2\"><a href=\"show_single_game?gameTitle=$gameTitle[$locationAtStack]\"> $gameTitle[$locationAtStack] </a></td>";
 				echo "	</tr>";
 				echo "	<tr>";
 				echo "		<td> $price[$locationAtStack] </td>";
