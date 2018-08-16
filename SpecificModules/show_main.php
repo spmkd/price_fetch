@@ -93,10 +93,12 @@ if($result2->num_rows > 0) {
 			# Also, we need to check if the rank of the date equals the $X
 			
 			if ( ($gameDate[$locationAtStack] == $uniqueDates[$y]) and ( $rank[$locationAtStack] == ($x+1) ) ) {
+
+				$linkToSingleGame = $_SERVER['PHP_SELF'] . "?gameTitle=" . $gameTitle[$locationAtStack];
 				
 				echo "<td><table>";
 				echo "	<tr>";
-				echo "		<td colspan=\"2\"><a href=\"show_single_game?gameTitle=$gameTitle[$locationAtStack]\"> $gameTitle[$locationAtStack] </a></td>";
+				echo "		<td colspan=\"2\"><a href=\"$linkToSingleGame\"> $gameTitle[$locationAtStack] </a></td>";
 				echo "	</tr>";
 				echo "	<tr>";
 				echo "		<td> $price[$locationAtStack] </td>";
