@@ -94,7 +94,7 @@ if($result2->num_rows > 0) {
 			
 			if ( ($gameDate[$locationAtStack] == $uniqueDates[$y]) and ( $rank[$locationAtStack] == ($x+1) ) ) {
 
-				$linkToSingleGame = $_SERVER['PHP_SELF'] . "?gameTitle=" . $gameTitle[$locationAtStack];
+				$linkToSingleGame = $_SERVER['PHP_SELF'] . "?gameTitle=" . $gameTitle[$locationAtStack] . "&fromDate=" . $fromDate . "&toDate=" . $toDate;
 				
 				echo "<td><table>";
 				echo "	<tr>";
