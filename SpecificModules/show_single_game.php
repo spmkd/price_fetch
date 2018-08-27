@@ -76,10 +76,10 @@ if($result1->num_rows > 0) {
          $uniqueNumberOfRecords--;
 
          for ($x=0; $x < $uniqueNumberOfRecords ; $x++){
-         	echo "['$gameDate[$x]',	$price[$x],	$rank[$x],	'$merchantName[$x]'],";
+         	echo "['$gameDate[$x]',	$price[$x],	$rank[$x],	'$rank[$x] - $merchantName[$x]'],";
          }
 
-         echo "['$gameDate[$uniqueNumberOfRecords]',	$price[$uniqueNumberOfRecords],	$rank[$uniqueNumberOfRecords],	'$merchantName[$uniqueNumberOfRecords]']";
+         echo "['$gameDate[$uniqueNumberOfRecords]',	$price[$uniqueNumberOfRecords],	$rank[$uniqueNumberOfRecords],	'$rank[$uniqueNumberOfRecords] - $merchantName[$uniqueNumberOfRecords]']";
 
          ?>
          
