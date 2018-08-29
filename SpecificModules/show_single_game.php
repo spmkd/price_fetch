@@ -86,7 +86,7 @@ if($result1->num_rows > 0) {
       ]);
 
     var options = {
-      title : 'Game Overview',
+      title : 'Game Overview - <?php echo $singleGameTitle; ?>',
       vAxis: {title: 'Price / Rank'},
       hAxis: {title: 'Date'},
       seriesType: 'line'
