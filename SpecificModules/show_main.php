@@ -60,7 +60,40 @@ if($result2->num_rows > 0) {
 		array_push($price, $row["Price"]);
 		array_push($merchantName, $row["merchantName"]);	
 	}
-	
+}
+
+// Verification that all rows have 25 entries is required
+// When a row has less than 25 rows, we need to fill it up for this date to get to 25
+
+$counter=0;
+
+for ($x = 0; $x < $numberOfUniqueDates; $x++){
+
+	for ($y = 0; $y < 25; $y++){
+
+		$theDate= $counter;
+
+		if ( strcmp($gameDate[$theDate], $uniqueDates[$x]) ){
+
+			error_log("Filling in for missing entries - $theDate - $gameDate[$theDate] and " . " $uniqueDates[$x]");
+
+			$toInsertGameDate		= array($uniqueDates[$x]);
+			$toInsertGameTitle 		= array("N/A");
+			$toInsertRank			= array($y + 1);
+			$toInsertPrice			= array("");
+			$toInsertMerchantName	= array("");
+
+			array_splice($gameDate, $counter, 0, $toInsertGameDate);
+			array_splice($gameTitle, $counter, 0, $toInsertGameTitle);
+			array_splice($rank, $counter, 0, $toInsertRank);
+			array_splice($price, $counter, 0, $toInsertPrice);
+			array_splice($merchantName, $counter, 0, $toInsertMerchantName);
+		}
+
+		$counter = $counter +1;
+
+	}
+
 }
 		
 ?>
@@ -78,6 +111,7 @@ if($result2->num_rows > 0) {
 	
 	echo "</tr>";
 	
+	// here we go to print all of the columns
 	for ($x = 0; $x < 25; $x++){
 		
 		$rankToDisplay = $x + 1;
@@ -85,6 +119,7 @@ if($result2->num_rows > 0) {
 		echo "<tr>";
 			echo "<td> $rankToDisplay </td>";
 		
+		// here we go through EACH row EACH date EACH rank
 		for ($y = 0; $y < $numberOfUniqueDates; $y++){
 			
 			$locationAtStack = $x + ( $y * 25);
@@ -107,6 +142,7 @@ if($result2->num_rows > 0) {
 				echo "</table></td>";
 				
 			} else {
+				error_log("$gameTitle[$locationAtStack] and date is");
 				error_log("Probalble issue, this should not appear!",0);
 				echo "This should not appear!";
 			}
