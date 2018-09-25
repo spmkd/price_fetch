@@ -40,10 +40,15 @@ $gameTitle 		= array();
 $rank			= array();
 $price			= array();
 $merchantName	= array();
+$isThisNewGame	= array();
+$priceChange	= array();
+$merchantChange	= array();
+$rankChange		= array();
+$comeBack		= array();
 
 # Get the main result, all values between two dates
 		
-$sql2 = "SELECT Top25.Date ,AllGameNames.gameTitle , Top25.Rank, Top25.Price, AllMerchants.merchantName 
+$sql2 = "SELECT Top25.Date ,AllGameNames.gameTitle , Top25.Rank, Top25.Price, AllMerchants.merchantName, Top25.isThisNewGame, Top25.priceChange, Top25.merchantChange, Top25.rankChange, Top25.comeBack 
 FROM Top25
 INNER JOIN AllGameNames ON Top25.gameName = AllGameNames.id
 INNER JOIN AllMerchants ON Top25.Merchant = AllMerchants.id
@@ -54,11 +59,16 @@ $result2 = $conn->query($sql2);
 if($result2->num_rows > 0) {
 		
 	while ($row = $result2->fetch_assoc()){
-		array_push($gameDate, $row["Date"]);
-		array_push($gameTitle, $row["gameTitle"]);
-		array_push($rank, $row["Rank"]);
-		array_push($price, $row["Price"]);
-		array_push($merchantName, $row["merchantName"]);	
+		array_push($gameDate, 		$row["Date"]);
+		array_push($gameTitle, 		$row["gameTitle"]);
+		array_push($rank, 			$row["Rank"]);
+		array_push($price, 			$row["Price"]);
+		array_push($merchantName, 	$row["merchantName"]);
+		array_push($isThisNewGame, 	$row["isThisNewGame"]);
+		array_push($priceChange, 	$row["priceChange"]);
+		array_push($merchantChange, $row["merchantChange"]);
+		array_push($rankChange, 	$row["rankChange"]);
+		array_push($comeBack, 		$row["comeBack"]);
 	}
 }
 
@@ -82,12 +92,22 @@ for ($x = 0; $x < $numberOfUniqueDates; $x++){
 			$toInsertRank			= array($y + 1);
 			$toInsertPrice			= array("");
 			$toInsertMerchantName	= array("");
+			$toInsertisThisNewGame	= array("");
+			$toInsertpriceChange	= array("");
+			$toInsertmerchantChange	= array("");
+			$toInsertrankChange		= array("");
+			$toInsertcomeBack		= array("");
 
 			array_splice($gameDate, $counter, 0, $toInsertGameDate);
 			array_splice($gameTitle, $counter, 0, $toInsertGameTitle);
 			array_splice($rank, $counter, 0, $toInsertRank);
 			array_splice($price, $counter, 0, $toInsertPrice);
 			array_splice($merchantName, $counter, 0, $toInsertMerchantName);
+			array_splice($isThisNewGame, $counter, 0, $toInsertisThisNewGame);
+			array_splice($priceChange, $counter, 0, $toInsertpriceChange);
+			array_splice($merchantChange, $counter, 0, $toInsertmerchantChange);
+			array_splice($rankChange, $counter, 0, $toInsertrankChange);
+			array_splice($comeBack, $counter, 0, $toInsertcomeBack);
 		}
 
 		$counter = $counter +1;
@@ -130,14 +150,26 @@ for ($x = 0; $x < $numberOfUniqueDates; $x++){
 			if ( ($gameDate[$locationAtStack] == $uniqueDates[$y]) and ( $rank[$locationAtStack] == ($x+1) ) ) {
 
 				$linkToSingleGame = $_SERVER['PHP_SELF'] . "?gameTitle=" . $gameTitle[$locationAtStack] . "&fromDate=" . $fromDate . "&toDate=" . $toDate;
-				
+
+				$isThisNewGameToPrint	= "";
+				$priceChangeToPrint		= "";
+				$merchantChangeToPrint	= "";
+				$rankChangeToPrint		= "";
+				$comeBackToPrint		= "";
+
+				if ($isThisNewGame[$locationAtStack] == "1") { $isThisNewGameToPrint = "<font color=\"red\"> NEW! </font>"; }
+				if ($priceChange[$locationAtStack] == "1") { $priceChangeToPrint = " &uarr; ";} elseif ($priceChange[$locationAtStack] == "-1") {$priceChangeToPrint = " &darr; ";}
+				if ($merchantChange[$locationAtStack] == "1") {$merchantChangeToPrint = " &harr; ";}
+				if ($rankChange[$locationAtStack] == "1") {$rankChangeToPrint = " &darr; ";} elseif ($rankChange[$locationAtStack] == "-1") {$rankChangeToPrint = " &uarr; ";}
+				if ($comeBack[$locationAtStack] == "1") {$comeBackToPrint = " &#8635; ";}
+
 				echo "<td><table>";
 				echo "	<tr>";
-				echo "		<td colspan=\"2\"><a href=\"$linkToSingleGame\"> $gameTitle[$locationAtStack] </a></td>";
+				echo "		<td colspan=\"2\"><a href=\"$linkToSingleGame\"> $gameTitle[$locationAtStack] </a> $isThisNewGameToPrint $rankChangeToPrint $comeBackToPrint</td>";
 				echo "	</tr>";
 				echo "	<tr>";
-				echo "		<td> $price[$locationAtStack] </td>";
-				echo "		<td> $merchantName[$locationAtStack] </td>";
+				echo "		<td> $price[$locationAtStack] $priceChangeToPrint</td>";
+				echo "		<td> $merchantName[$locationAtStack] $merchantChangeToPrint</td>";
 				echo "	</tr>";
 				echo "</table></td>";
 				
