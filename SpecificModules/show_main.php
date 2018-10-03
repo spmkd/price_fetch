@@ -1,5 +1,8 @@
 <?php
 
+# Including the function which returns the HTML colour for tables with number of changes
+include 'Functions/createHTMLColour.php';
+
 # Set the Start and End date for which we need to show data for
 
 $date1 = new DateTime($toDate); 	// toDate 	is set in header_date_search.php
@@ -151,19 +154,24 @@ for ($x = 0; $x < $numberOfUniqueDates; $x++){
 
 				$linkToSingleGame = $_SERVER['PHP_SELF'] . "?gameTitle=" . $gameTitle[$locationAtStack] . "&fromDate=" . $fromDate . "&toDate=" . $toDate;
 
+				# This variable will hold the number of changes for this game so that we can colour the background
+				$numberOfChanges		= 0;
+
 				$isThisNewGameToPrint	= "";
 				$priceChangeToPrint		= "";
 				$merchantChangeToPrint	= "";
 				$rankChangeToPrint		= "";
 				$comeBackToPrint		= "";
 
-				if ($isThisNewGame[$locationAtStack] == "1") { $isThisNewGameToPrint = "<font color=\"red\"> NEW! </font>"; }
-				if ($priceChange[$locationAtStack] == "1") { $priceChangeToPrint = " &uarr; ";} elseif ($priceChange[$locationAtStack] == "-1") {$priceChangeToPrint = " &darr; ";}
-				if ($merchantChange[$locationAtStack] == "1") {$merchantChangeToPrint = " &harr; ";}
-				if ($rankChange[$locationAtStack] == "1") {$rankChangeToPrint = " &darr; ";} elseif ($rankChange[$locationAtStack] == "-1") {$rankChangeToPrint = " &uarr; ";}
-				if ($comeBack[$locationAtStack] == "1") {$comeBackToPrint = " &#8635; ";}
+				if ($isThisNewGame[$locationAtStack] == "1") { $isThisNewGameToPrint = "<font color=\"red\"> NEW! </font>"; $numberOfChanges++; }
+				if ($priceChange[$locationAtStack] == "1") { $priceChangeToPrint = " &uarr; "; $numberOfChanges++;} elseif ($priceChange[$locationAtStack] == "-1") {$priceChangeToPrint = " &darr; "; $numberOfChanges++;}
+				if ($merchantChange[$locationAtStack] == "1") {$merchantChangeToPrint = " &harr; "; $numberOfChanges++;}
+				if ($rankChange[$locationAtStack] == "1") {$rankChangeToPrint = " &darr; "; $numberOfChanges++;} elseif ($rankChange[$locationAtStack] == "-1") {$rankChangeToPrint = " &uarr; "; $numberOfChanges++;}
+				if ($comeBack[$locationAtStack] == "1") {$comeBackToPrint = " &#8635; "; $numberOfChanges++;}
 
-				echo "<td><table>";
+				$colourBasedOnNumberOfChanges = CreateHTMLColour($numberOfChanges);
+
+				echo "<td><table bgcolor=$colourBasedOnNumberOfChanges>";
 				echo "	<tr>";
 				echo "		<td colspan=\"2\"><a href=\"$linkToSingleGame\"> $gameTitle[$locationAtStack] </a> $isThisNewGameToPrint $rankChangeToPrint $comeBackToPrint</td>";
 				echo "	</tr>";
